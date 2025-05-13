@@ -18,7 +18,9 @@
 <body>
     <div class="container" id="signup" style="display:none;">
       <h1 class="form-title">Register</h1>
-      <form method="post" action="register.php">
+      <form method="post">
+
+      <input type="hidden" name="action" value="signin">
         <div class="input-group">
            <i class="fas fa-user"></i>
            <input type="text" name="fName" id="fName" placeholder="First Name" required>
@@ -30,23 +32,23 @@
             <label for="lName">Last Name</label>
         </div>
         <div class="input-group">
-            <i class="fas fa-user"></i>
+            <i class="fas fa-credit-card"></i>
             <input type="number" name="student_number" id="student_number"
              placeholder="student_number" required>
             <label for="student_number" min ="10" >Student number</label>
         </div>
         <div class="input-group">
-            <i class="fas fa-user"></i>
+            <i class="fas fa-list"></i>
             <input type="text" name="module_code"
              id="module_code" placeholder="module_code"
               required>
-            <label for="password">module code</label>
+            <label for="module_code">module code</label>
         </div>
         <div class="input-group">
-            <i class="fas fa-envelope"></i>
-            <input type="email" name="email" id="email" placeholder="Email" required>
-            <label for="email">Email</label>
-        </div>
+              <i class="fas fa-envelope"></i>
+              <input type="email" name="email" id="email" placeholder="Email" required>
+              <label for="email">Email</label>
+          </div>
         <div class="input-group">
             <i class="fas fa-phone"></i>
             <input type="number" name="contact_number" id="email" placeholder="Email" required>
@@ -66,7 +68,7 @@
        <input type="submit" class="btn" value="Sign Up" name="signUp">
       </form>
       <p class="or">
-        ----------or alternatively--------
+        OR
       </p>
       <div class="icons">
         <i class="fab fa-google"></i>
@@ -80,8 +82,10 @@
     </div>
 
     <div class="container" id="signIn">
-        <h1 class="form-title">Sign In</h1>
-        <form method="post" action="register.php">
+        <h1 class="form-title">Sign Back In</h1>
+        <form method="post">
+
+        <input type="hidden" name="action" value="signin">
           <div class="input-group">
               <i class="fas fa-envelope"></i>
               <input type="email" name="email" id="email" placeholder="Email" required>
@@ -98,7 +102,7 @@
          <input type="submit" class="btn" value="Sign In" name="signIn">
         </form>
         <p class="or">
-          ----------or alternatively--------
+         OR
         </p>
         <div class="icons">
           <i class="fab fa-google"></i>
@@ -112,12 +116,15 @@
       </div>
       <script src="script.js"></script>
 </body>
+<icon>
 <footer>
 
-  <div class = "footer" id = "footer_content>
+<div class = "footer" id = "footer_content">
 
+<div class="input-group">
+            <i class="fas fa-lock"></i>
 
-  </div>
+</div>
 
 </footer>
 </html>
