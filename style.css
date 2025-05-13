@@ -113,7 +113,7 @@ input:focus~label,input:not(:placeholder-shown)~label{
     cursor:pointer;
     border:2px solid #dfe9f5;
     margin:0 15px;
-    transition:1s;
+    transition:0.002s;
 }
 .icons i:hover{
     background:#07001f;
@@ -133,6 +133,7 @@ button{
     background-color:transparent;
     font-size:1rem;
     font-weight:bold;
+    border-radius: 50px;
 }
 button:hover{
     text-decoration:underline;
