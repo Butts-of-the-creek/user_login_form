@@ -1,0 +1,7 @@
+*{
+    font-family:"caption",sans-serif;
+}
+body{
+    background-color: #2b2f3f;
+    background:linear-gradient(to right,#1d1c1c,#555f85);
+}
