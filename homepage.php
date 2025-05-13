@@ -1,53 +1,59 @@
 <?php
 session_start();
-include("connect.php");
+if (empty($_SESSION['user_id'])) {
+  header('Location: index.php');
+  exit;
+}
+include 'database.php';
 
+// Fetch user info
+$stmt = $conn->prepare("
+  SELECT profile_pic
+  FROM users WHERE id=?
+");
+$stmt->bind_param('i', $_SESSION['user_id']);
+$stmt->execute();
+$stmt->bind_result($fn, $ln, $stu, $ct, $mc, $em, $pic);
+$stmt->fetch();
+$stmt->close();
+$conn->close();
+
+// Full name and membership tier
+$fullName = htmlspecialchars("$fn $ln");
+$tier     = 'Gold member';
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
-    <link rel="stylesheet" 
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel = "stylesheet" href = "homepage.css">
+  <meta charset="UTF-8">
+  <title>Welcome, <?= $fullName ?></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="style.css" rel="stylesheet">
+  <script defer src="script.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
-<header>
-  <div class = "header"
-  id = "header" name = "header" >
-  <div class = "header_element"  id = "menu">
-     <h1>Menu</h1>
-  </div>
-
-  <div class = "header_element" id = "H">
-     <h1>Home</h1>
-  </div>
-
-  <div class = "header_element" id = "H">
-     <h1></h1>
-  </div>
-
-  <hr>
-</header>
-
 <body>
-    <div style="text-align:center; padding:15%;">
-      <p  style="font-size:50px; font-weight:bold;">
-       Hello  <?php 
-       if(isset($_SESSION['email'])){
-        $email=$_SESSION['email'];
-        $query=mysqli_query($conn, "SELECT users.* FROM `users` WHERE users.email='$email'");
-        while($row=mysqli_fetch_array($query)){
-            echo $row['firstName'].' '.$row['lastName'];
-        }
-       }
-       ?>
-       :)
-      </p>
-      <a href="logout.php">Logout</a>
+  <div class="card">
+    <div class="profile-top">
+      <img class="avatar" src="<?= $pic ?: 'default-avatar.png' ?>" alt="Avatar">
+      <h1><?= $fullName ?></h1>
+      <p class="tier"><i class="fas fa-bolt"></i> <?= $tier ?></p>
     </div>
+    <div class="contact-info">
+      <p><i class="fas fa-phone"></i> <?= htmlspecialchars($ct) ?></p>
+      <p><i class="fas fa-envelope"></i> <?= htmlspecialchars($em) ?></p>
+    </div>
+    <div class="menu">
+      <label class="toggle">
+        <span><i class="fas fa-moon"></i> Dark mode</span>
+        <input type="checkbox" id="darkModeToggle">
+        <span class="slider"></span>
+      </label>
+      <a href="#"><i class="far fa-credit-card"></i> Cards</a>
+      <a href="#"><i class="fas fa-user-edit"></i> Profile details</a>
+      <a href="#"><i class="fas fa-cog"></i> Settings</a>
+      <a href="logout.php" class="logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+    </div>
+  </div>
 </body>
 </html>
