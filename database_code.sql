@@ -1,17 +1,17 @@
-CREATE DATABASE IF NOT EXISTS student_db;
+CREATE DATABASE student_db;
 
 USE student_db;
 
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
-    student_number VARCHAR(20) UNIQUE NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    surname VARCHAR(50) NOT NULL,
+    student_number INT(20) UNIQUE NOT NULL,
     module_code VARCHAR(20) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
-    contact_number VARCHAR(15) NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    profile_pic VARCHAR(255) DEFAULT 'default-avatar.png',
+    contact VARCHAR(15) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    profile_picture VARCHAR(255) DEFAULT 'default-avatar.png',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
