@@ -1,25 +1,19 @@
 <?php
 session_start();
-if (empty($_SESSION['user_id'])) {
-    header('Location: index.php');
-    exit;
-}
 include 'connect.php';
 
 // Fetch user info
-$stmt = $conn->prepare("
-    SELECT profile_pic
-    FROM users WHERE id=?
-");
-$stmt->bind_param('i', $_SESSION['user_id']);
+$stmt = $conn->prepare(" SELECT profile_pic FROM users WHERE id=?");
+$stmt->bind_param('i', $_SESSION['id']);
 $stmt->execute();
 $stmt->bind_result($profilePic);
 $stmt->fetch();
+
 $stmt->close();
 $conn->close();
 
-$fullName = htmlspecialchars("$firstName $lastName");
-$profilePic = $profilePic ?: 'default-avatar.png';
+$fullName = htmlspecialchars("$name $surname");
+$profile_picture = $profile_picture ?: 'default-avatar.png';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,12 +33,12 @@ $profilePic = $profilePic ?: 'default-avatar.png';
     </header>
     <div class="profile-container">
         <div class="profile-card">
-            <img src="<?= $profilePic ?>" alt="Avatar" class="avatar">
+            <img src="<?= $profile_picture ?>" alt="Avatar" class="avatar">
             <h2><?= $fullName ?></h2>
-            <p><i class="fas fa-id-card"></i> Student Number: <?= htmlspecialchars($studentNumber) ?></p>
-            <p><i class="fas fa-list"></i> Module Code: <?= htmlspecialchars($moduleCode) ?></p>
-            <p><i class="fas fa-envelope"></i> Email: <?= htmlspecialchars($email) ?></p>
-            <p><i class="fas fa-phone"></i> Contact: <?= htmlspecialchars($contactNumber) ?></p>
+            <p><i class="fas fa-id-card"></i> Student Number: <?= htmlspecialchars($student_number) ?></p>
+            <p><Module Code: <?= htmlspecialchars($module_code) ?></p>
+            <p>< Email: <?= htmlspecialchars($email) ?></p>
+            <p>Contact: <?= htmlspecialchars($contact) ?></p>
         </div>
         <div class="menu">
             <a href="edit-profile.php" class="btn"><i class="fas fa-user-edit"></i> Edit Profile</a>
