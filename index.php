@@ -120,11 +120,6 @@
 <footer>
 
 <div class = "footer" id = "footer_content">
-
-<div class="input-group">
-            <i class="fas fa-lock"></i>
-
-</div>
-
+  <h4> made by 202359509</h4>
 </footer>
 </html>
