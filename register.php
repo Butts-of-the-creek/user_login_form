@@ -2,13 +2,14 @@
 session_start();
 include 'connect.php';
 
+//if signup data submitted
 if (isset($_POST['signUp'])) {
-    $name = trim($_POST['fname']);
-    $surname = trim($_POST['lName']);
+    $name = trim($_POST['name']);
+    $surname = trim($_POST['surname']);
     $student_number = trim($_POST['student_number']);
     $contact = trim($_POST['contact']);
     $module_code = trim($_POST['module_code']);
-    $email = trim($_POST['email']); // FIXED typo
+    $email = trim($_POST['email']); 
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
@@ -21,6 +22,7 @@ if (isset($_POST['signUp'])) {
     if ($checkEmail->num_rows > 0) {
         echo "Email exists. Use another.";
     } else {
+        //confirming whether password and confirm_password are equal
         if ($password === $confirm_password) {
             $hash = password_hash($password, PASSWORD_DEFAULT);
 
