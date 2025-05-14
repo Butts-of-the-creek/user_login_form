@@ -7,14 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<header>
-  <div class = "header"
-  id = "header" name = "header" >
-  <div class = "header_element"  id = "menu">
-     <h1></h1>
-  </div>
-  <hr>
-</header>
 <body>
     <div class="container" id="signup" style="display:none;">
       <h1 class="form-title">Register</h1>
@@ -34,13 +26,13 @@
         <div class="input-group">
             <i class="fas fa-credit-card"></i>
             <input type="number" name="student_number" id="student_number"
-             placeholder="student_number" required>
+             placeholder="student number" required>
             <label for="student_number" min ="10" >Student number</label>
         </div>
         <div class="input-group">
             <i class="fas fa-list"></i>
             <input type="text" name="module_code"
-             id="module_code" placeholder="module_code"
+             id="module_code" placeholder="module code"
               required>
             <label for="module_code">module code</label>
         </div>
@@ -51,7 +43,7 @@
           </div>
         <div class="input-group">
             <i class="fas fa-phone"></i>
-            <input type="number" name="contact_number" id="email" placeholder="Email" required>
+            <input type="tel" name="contact" id="conatact" placeholder="Phone number" required>
             <label for="phome">phone number</label>
         </div> 
         <div class="input-group">
@@ -62,7 +54,7 @@
         <div class="input-group">
             <i class="fas fa-lock"></i>
             <input type="password" name="confirm_password"
-             id="confirm_password" placeholder="Password" required>
+             id="confirm_password" placeholder="Confirm password" required>
             <label for="confirm_password">Confirm Password</label>
         </div>
        <input type="submit" class="btn" value="Sign Up" name="signUp">
@@ -116,7 +108,7 @@
       </div>
       <script src="script.js"></script>
 </body>
-<icon>
+
 <footer>
 
 <div class = "footer" id = "footer_content">
