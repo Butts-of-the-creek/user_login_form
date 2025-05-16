@@ -2,47 +2,87 @@
 session_start();
 include 'connect.php';
 
-// Fetch user info
-$stmt = $conn->prepare(" SELECT profile_pic FROM users WHERE id=?");
-$stmt->bind_param('i', $_SESSION['id']);
-$stmt->execute();
-$stmt->bind_result($profilePic);
-$stmt->fetch();
+if (empty($_SESSION['user_id'])) {
+    header('Location: index.php');
+    exit;
+}
 
+$stmt = $conn->prepare("
+    SELECT id, name, surname, student_number, module_code, contact, email, profile_picture
+    FROM users
+    WHERE id = ?
+");
+
+$stmt->bind_param('i', $_SESSION['user_id']);
+$stmt->execute();
+$stmt->bind_result($id, $name, $surname, $student_number, $module_code, $contact, $email, $profile_picture);
+$stmt->fetch();
 $stmt->close();
 $conn->close();
 
+// Fallback avatar if none uploaded
+$avatar = $profile_picture ?: 'default-avatar.png';
 $fullName = htmlspecialchars("$name $surname");
-$profile_picture = $profile_picture ?: 'default-avatar.png';
 ?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Welcome, <?= $fullName ?></title>
-    <link href="homepage.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <title>User Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+   
+    <link rel="stylesheet" href="homepage.css">
 </head>
 <body>
-    <header>
-        <div class="header">
-            <h1>Welcome, <?= $fullName ?></h1>
-        </div>
-    </header>
-    <div class="profile-container">
+    <div class="container">
         <div class="profile-card">
-            <img src="<?= $profile_picture ?>" alt="Avatar" class="avatar">
-            <h2><?= $fullName ?></h2>
-            <p><i class="fas fa-id-card"></i> Student Number: <?= htmlspecialchars($student_number) ?></p>
-            <p><Module Code: <?= htmlspecialchars($module_code) ?></p>
-            <p>< Email: <?= htmlspecialchars($email) ?></p>
-            <p>Contact: <?= htmlspecialchars($contact) ?></p>
-        </div>
-        <div class="menu">
-            <a href="edit-profile.php" class="btn"><i class="fas fa-user-edit"></i> Edit Profile</a>
-            <a href="logout.php" class="btn"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+            <div class="profile-header">
+                <div class="main-profile">
+                    <div class="profile-image" style="background-image: url('uploads/<?= htmlspecialchars($avatar) ?>');"></div>
+                    <div class="profile-names">
+                        <h1 class="username">Hello,<?= $fullName ?></h1>
+                        <small class="page-title">Student</small>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-body">
+                <div class="profile-actions">
+                    <a href="edit-profile.php" class="btn follow"><i class="fas fa-user-edit"></i> Edit Profile</a>
+                    <a href="logout.php" class="btn message"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        
+                </div>
+                <div class="account-info">
+                    <div class="data">
+                        <div class="important-data">
+                            <section class="data-item">
+                                <h3 class="value"><?= htmlspecialchars($student_number) ?></h3>
+                                <small class="title">Student Number</small>
+                            </section>
+                            <section class="data-item">
+                                <h3 class="value"><?= htmlspecialchars($module_code) ?></h3>
+                                <small class="title">Module Code</small>
+                            </section>
+                            <section class="data-item">
+                                <h3 class="value"><?= htmlspecialchars($contact) ?></h3>
+                                <small class="title">Contact</small>
+                            </section>
+                        </div>
+                        <div class="other-data">
+                            <section class="data-item">
+                                <h3 class="value"><?= htmlspecialchars($email) ?></h3>
+                                <small class="title">Email</small>
+                            </section>
+                            <!-- Add more data items as needed -->
+                        </div>
+                    </div>
+                    <!-- Social media links can be added here if available -->
+                </div>
+            </div>
         </div>
     </div>
 </body>

@@ -2,42 +2,42 @@
 session_start();
 include 'connect.php';
 
-//if signup data submitted
 if (isset($_POST['signUp'])) {
+    
     $name = trim($_POST['name']);
     $surname = trim($_POST['surname']);
-    $student_number = trim($_POST['student_number']);
+    $student_number  = trim($_POST['student_number']);
     $contact = trim($_POST['contact']);
     $module_code = trim($_POST['module_code']);
     $email = trim($_POST['email']); 
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
-    // Checking if email exists
+    // Checking if email already exists
     $checkEmail = $conn->prepare("SELECT id FROM users WHERE email = ?");
     $checkEmail->bind_param("s", $email);
     $checkEmail->execute();
     $checkEmail->store_result();
 
     if ($checkEmail->num_rows > 0) {
-        echo "Email exists. Use another.";
+        echo "Email already exists! Use another.";
     } else {
-        //confirming whether password and confirm_password are equal
         if ($password === $confirm_password) {
             $hash = password_hash($password, PASSWORD_DEFAULT);
 
-            $insertQuery = $conn->prepare("
-                INSERT INTO users (name, surname, student_number, contact, module_code, email, password)
+            $stmt = $conn->prepare("
+                INSERT INTO users (name, surname, student_number, module_code, email,contact,password)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
             ");
-            $insertQuery->bind_param("ssissss", $name, $surname, $student_number, $contact, $module_code, $email, $hash);
+            $stmt->bind_param("ssissss", $name, $surname,
+             $student_number, $module_code, $email, $contact, $hash);
 
-            if ($insertQuery->execute()) {
-                echo "Registeration successful";
-                header("Location : index.php");//exit to login page
+            if ($stmt->execute()) {
+                echo "Registered successfully. Redirecting...";
+                header("Location: index.php");
                 exit;
             } else {
-                echo "Error: " . $insertQuery->error;
+                echo "Error: " . $stmt->error;
             }
         } else {
             echo "Passwords don't match. Please try again.";
@@ -47,23 +47,24 @@ if (isset($_POST['signUp'])) {
     $checkEmail->close();
 }
 
-// signing in logic
-if (isset($_POST['signIn'])) {
-    $email = trim($_POST['email']);
-    $password = $_POST['password'];
 
-    $query = $conn->prepare("SELECT id, email, password FROM users WHERE email = ?");
-    $query->bind_param("s", $email);
-    $query->execute();
+if (isset($_POST['signIn'])) {
+    $loginmail = trim($_POST['loginmail']);
+    $loginpass = $_POST['loginpass'];
+
+    $query = $conn->prepare("SELECT id, email, password
+     FROM users WHERE email = ?");
+    $query->bind_param("s", $loginmail);
+    $query->execute(); 
     $query->store_result();
 
     if ($query->num_rows > 0) {
-        $query->bind_result($id, $email, $hash);
+        $query->bind_result($user_id, $mail, $hash);
         $query->fetch();
 
-        if (password_verify($password, $hash)) {
-            $_SESSION['user_id'] = $id;
-            $_SESSION['email'] = $email;
+        if (password_verify($loginpass, $hash)) {
+            $_SESSION['user_id'] =  $user_id;
+            $_SESSION['email'] = $mail;
             header("Location: homepage.php");
             exit;
         } else {
